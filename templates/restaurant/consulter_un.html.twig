@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ titre }} | {{ parent() }} {% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-center justify-content-sm-center align-items-sm-center justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center align-items-xxl-center" style="width: 90%;padding: 70px 0px;margin: auto;">
+        <div class="container py-xl-5">
+            <div class="row mb-5">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    {% if randomMode %}
+                        <h2 style="color: #002d47;">Ce restaurant a été tiré au hasard</h2>
+                        <p class="w-lg-50" style="color: #002d47;">Voici le restaurant que nous avons choisi au hasard parmi tous les restaurants pour vous !</p>
+                    {% elseif ajoutMode %}
+                        <h2 style="color: #002d47;">Le restaurant a été ajouté</h2>
+                        <p class="w-lg-50" style="color: #002d47;">Le restaurant que vous avez proposé à bien été ajouté !</p>
+                    {% else %}
+                        <h2 style="color: #002d47;">Consulter le restaurant</h2>
+                        <p class="w-lg-50" style="color: #002d47;">Fiche pour consulter le restaurant</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3 d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-center justify-content-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center justify-content-xxl-center bounce animated" style="width: 100%;">
+                <div class="col" style="width: 90%;">
+                    <div class="card"><img class="card-img-top w-100 d-block fit-cover" style="height: 450px; object-fit: cover" src="{{ asset(restaurant.getPicturePath()) }}">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center flex-sm-column flex-md-row align-items-md-start p-4" style="width: 100%;">
+                            <div class="text-start text-md-center mb-3 mb-md-0" style="width: 100%;">
+                                <h4 class="card-title" data-aos="fade" data-aos-duration="500" style="color: #002d47;">{{ restaurant.name }}</h4>
+                                <p class="card-text" data-aos="fade" data-aos-duration="500" style="color: #002d47;">{% if restaurant.number != 0 %}{{ restaurant.number }} {% endif %}{{ restaurant.street }}, {{ restaurant.postalCode }} {{ restaurant.city }}</p>
+                                <div class="d-flex">
+                                    <div class="text-start">
+                                        <p data-aos="fade" data-aos-duration="500" class="text-muted mb-0">Ajouté par :</p>
+                                        <p class="mb-0" data-aos="fade" data-aos-duration="500" style="color: #002d47;">{{ restaurant.user ? restaurant.user.pseudo : 'Utilisateur supprimé' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column" style="width: 100%;height: auto;">
+                                <h4 data-aos="fade" data-aos-duration="500" style="color: #002d47;">Catégorie(s):</h4>
+                                <div class="d-flex flex-column" style="width: 100%;height: auto;">
+                                    {% for categorie in restaurant.category %}
+                                    <div class="d-flex flex-column" style="width: 90%;height: auto;margin: auto;margin-top: 5px;margin-bottom: 5px;"><span style="border: 1px solid rgba(0,0,0,.125);border-radius: .25rem;text-align: center;color: #002d47;">{{ categorie.name }}</span></div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% if app.user and (is_granted('ROLE_ADMIN') or restaurant.user.pseudo == app.user.pseudo) %}
+                        <div class="d-flex d-xl-flex justify-content-end align-items-center justify-content-xl-end" style="margin: 0px 24px 20px;">
+                            <button class="btn btn-primary" type="button" onclick="window.location.href = '{{ path('app_modifier_restaurant', {'id' : restaurant.id}) }}'" style="margin-right: 10px;border-style: none;border-radius: 4px;background: #002d47;">Modifier</button>
+                            {{ form_start(form, {'action': path('app_supprimer_restaurant', {'id': restaurant.id})}) }}
+                            <button class="js-btn-delete btn btn-danger" type="submit" style="border-style: none;border-radius: 4px;">Supprimer</button>
+                            {{ form_end(form) }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

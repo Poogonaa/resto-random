@@ -2,18 +2,96 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}RestoRandom{% endblock %}</title>
+
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
         {% endblock %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
         {% endblock %}
     </head>
-    <body>
+    <body class="text-center d-flex flex-column min-vh-100 justify-content-sm-start align-items-sm-center justify-content-md-start align-items-md-center justify-content-lg-start align-items-lg-center justify-content-xl-start align-items-xl-center justify-content-xxl-start align-items-xxl-center" style="width: 100%;background: var(--bs-gray-100);">
+    <nav class="navbar navbar-dark navbar-expand-md fixed-top py-3" style="background: #002d47;">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{{ path('app_accueil') }}">
+                <span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon" style="width: 48px;height: 48px;background: var(--bs-gray-100);">
+                    <i class="fas fa-random text-center d-xxl-flex justify-content-xxl-center align-items-xxl-center" style="background: rgba(0,114,198,0);color: #002d47;font-size: 25px;"></i>
+                </span>
+                <span>RestoRandom</span>
+            </a>
+            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-5">
+                <span class="visually-hidden">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navcol-5">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ path('app_accueil') }}">Roulette</a></li>
+                    {% if not app.user %}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_consulter_restaurant') }}">Consulter les restaurants</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_consulter_categorie') }}">Consulter les catégories</a></li>
+                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
+                                <i class="fas fa-duotone fa-user"></i>
+                            </a>
+                            <div class="dropdown-menu" style="background: #002d47;color: rgba(255,255,255,0.55);">
+                                <a class="dropdown-item" href="{{ path('app_connexion') }}" style="color: rgba(255,255,255,0.55);">Connexion</a>
+                                <a class="dropdown-item" href="{{ path('app_inscription') }}" style="color: rgba(255,255,255,0.55);">Inscription</a>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Restaurant</a>
+                            <div class="dropdown-menu" style="background: #002d47;color: rgba(255,255,255,0.55);">
+                                <a class="dropdown-item" href="{{ path('app_ajouter_restaurant') }}" style="color: rgba(255,255,255,0.55);">Ajouter</a>
+                                <a class="dropdown-item" href="{{ path('app_consulter_restaurant') }}" style="color: rgba(255,255,255,0.55);">Consulter</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Catégorie</a>
+                            <div class="dropdown-menu" style="background: #002d47;color: rgba(255,255,255,0.55);">
+                                <a class="dropdown-item" href="{{ path('app_ajouter_categorie') }}" style="color: rgba(255,255,255,0.55);">Ajouter</a>
+                                <a class="dropdown-item" href="{{ path('app_consulter_categorie') }}" style="color: rgba(255,255,255,0.55);">Consulter</a>
+                            </div>
+                        </li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_consulter_utilisateur') }}">Comptes</a></li>
+                        {% endif %}
+                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
+                                <i class="fas fa-duotone fa-user"></i>
+                            </a>
+                            <div class="dropdown-menu" style="background: #002d47;color: rgba(255,255,255,0.55);">
+                                <a class="dropdown-item" href="{{ path('app_consulter_un_utilisateur') }}" style="color: rgba(255,255,255,0.55);">Votre Compte</a>
+                                <a class="dropdown-item" href="{{ path('app_deconnexion') }}" style="color: rgba(255,255,255,0.55);">Deconnexion</a>
+                            </div>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
         {% block body %}{% endblock %}
+    <!-- Footer -->
+    <footer class="text-center d-flex mt-auto float-end d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-end align-items-end justify-content-sm-end align-items-sm-end justify-content-md-end align-items-md-end justify-content-lg-end align-items-lg-end justify-content-xl-end align-items-xl-end justify-content-xxl-end align-items-xxl-end py-4" style="background: #002d47;height: 94px;width: 100%;">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-lg-3">
+                <div class="col">
+                    <p class="my-2" style="color: #ffffff8d;">Copyright&nbsp;© 2022 Brand</p>
+                </div>
+                <div class="col">
+                </div>
+                <div class="col">
+                    <ul class="list-inline my-2">
+                        <li class="list-inline-item"><a class="link-secondary" href="#" style="color: #ffffff8d;">Privacy Policy</a></li>
+                        <li class="list-inline-item"><a class="link-secondary" href="#" style="color: #ffffff8d;">Terms of Use</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End Footer -->
     </body>
 </html>

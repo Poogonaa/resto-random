@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} La catégorie a été ajoutée | {{ parent() }} {% endblock %}
+
+{% block body %}
+<div class="d-flex" style="margin: auto;padding: 70px;width: 100%;">
+    <div class="col-md-8 col-xl-6 text-center mx-auto" style="margin: auto;">
+        <h1 style="color: #002d47;">La catégorie a été ajoutée</h1>
+        <p class="w-lg-50" style="color: #00386b;">La catégorie {{ categorie.name }} a bien été ajoutée !</p>
+    </div>
+</div>
+{% endblock %}

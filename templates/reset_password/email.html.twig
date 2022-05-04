@@ -1,0 +1,10 @@
+<div class="d-flex flex-column" style="padding: 140px 0px;width: 100%;">
+    <h1>Bonjour!</h1>
+
+    <p>Pour réinitialiser votre mot de passe, cliquer sur le lien ci-dessous</p>
+
+    <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
+
+    <p>Ce lien expirera dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+
+</div>

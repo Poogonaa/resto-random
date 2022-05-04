@@ -1,0 +1,40 @@
+<table class="table table-hover table-borderless">
+    <thead class="table-light" style="border-bottom-width: 1px;border-bottom-color: rgba(0,0,0,0.18);color: #002d47;">
+    <tr>
+        <th>Pseudo</th>
+        <th>Mail</th>
+        <th>Roles</th>
+        <th>Points</th>
+        <th>Activer</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr {{ stimulus_controller('user-table') }}>
+            <td>{{ user.pseudo }}</td>
+            <td>{{ user.mail }}</td>
+            <td>{% for role in user.roles %}{{ role }} {% endfor %}</td>
+            <td>{{ user.point }}</td>
+            <td>{% if user.active %}Oui{% else %}Non{% endif %}</td>
+            <td class="d-flex flex-row justify-content-center fs-4">
+                <a class="m-auto" href="#" {{ stimulus_action('user-table', 'edit') }} data-user-table-editUrl-param="{{ path('app_modifier_admin_utilisateur', { pseudo: user.pseudo }) }}">
+                    <i class="fas fa-regular fa-user-edit" data-bss-hover-animate="pulse" style="color: #002d47;"></i>
+                </a>
+                {% if user.active %}
+                    <a class="m-auto" href="#" {{ stimulus_action('user-table', 'active') }} data-user-table-activeurl-param="{{ path('app_updateStatus_utilisateur', { pseudo: user.pseudo }) }}">
+                        <i class="fas fa-regular fa-toggle-on text-success" data-bss-hover-animate="pulse"></i>
+                    </a>
+                {% else %}
+                    <a class="m-auto" href="#" {{ stimulus_action('user-table', 'active') }} data-user-table-activeurl-param="{{ path('app_updateStatus_utilisateur', { pseudo: user.pseudo }) }}">
+                        <i class="fas fa-regular fa-toggle-off text-danger" data-bss-hover-animate="pulse"></i>
+                    </a>
+                {% endif %}
+                <a class="m-auto" href="#" {{ stimulus_action('user-table', 'delete') }}>
+                    <i class="fas fa-regular fa-trash-alt text-danger" data-bss-hover-animate="pulse"></i>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

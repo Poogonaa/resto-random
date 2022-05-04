@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réinitialiser votre mot de passe | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="d-flex" style="padding: 140px 0px;width: 100%;">
+        <section class="position-relative py-4 py-xl-5" style="width: 100%;">
+            <div class="container">
+                <div class="row mb-5">
+                    <div class="col-md-8 col-xl-6 text-center mx-auto">
+                        <h2 style="color: #002d47;">Réinitialiser votre mot de passe</h2>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card mb-5" style="background: rgba(255,255,255,0);">
+                            <div class="card-body d-flex flex-column align-items-center">
+                                {% for flash_error in app.flashes('reset_password_error') %}
+                                    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                                {% endfor %}
+                                {{ form_start(requestForm) }}
+                                <div class="mb-3">
+                                    {{ form_widget(requestForm.mail, {'attr': {'class':'form-control', 'placeholder':'Mot de passe actuel', 'style':'color: #002d47;'}}) }}
+                                </div>
+                                <div class="mb-3">
+                                    <small>
+                                        Entrer votre adresse mail et nous vous enverrons un mail
+                                        pour réinitialiser votre mot de passe.
+                                    </small>
+                                </div>
+                                <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit" data-bss-hover-animate="pulse" style="border-style: none;border-radius: 4px;background: #002d47;">Envoyer le mail</button></div>
+                                {{ form_end(requestForm) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

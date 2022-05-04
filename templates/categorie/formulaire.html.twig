@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Ajouter une catégorie | {{ parent() }} {% endblock %}
+
+{% block body %}
+    <div class="d-flex" style="margin: 0px;padding: 70px;width: 100%;">
+        <section class="d-xxl-flex mt-auto justify-content-xxl-center align-items-xxl-center position-relative py-4 py-xl-5" style="width: 100%;">
+            <div class="container">
+                <div class="row mb-5">
+                    <div class="col-md-8 col-xl-6 text-center mx-auto">
+                        <h1 style="color: #002d47;">Ajouter une catégorie</h1>
+                        <p class="w-lg-50" style="color: #00386b;">Ce formulaire permet de rajouter des catégories qui peuvent être lié à un restaurant.</p>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card mb-5" style="background: rgba(255,255,255,0);">
+                            <div class="card-body d-flex flex-column align-items-center" style="color: #002d47;">
+                                {{ form_start(form, {'attr':{'class':'text-center'}}, ) }}
+                                    <div class="mb-3">
+                                        {{ form_errors(form.name) }}
+                                        {{ form_widget(form.name, {'attr':{'placeholder':'Nom', 'data-aos-duration':'500', 'class':'form-control', 'data-aos':'fade', 'maxlength':'255', 'style':'color: #002d47;background: rgba(255,255,255,0);', }}) }}
+                                    </div>
+                                    <div data-aos="fade" data-aos-duration="500" class="mb-3">
+                                        <button class="btn btn-primary d-block w-100" data-bss-hover-animate="pulse" type="submit" style="background: #0072c6;border-style: none;border-radius: 4px;color: var(--bs-gray-100);">Validé</button>
+                                    </div>
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

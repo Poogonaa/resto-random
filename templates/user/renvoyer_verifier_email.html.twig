@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Verifier votre email | {{ parent() }} {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="login-form bg-light mt-4 p-4">
+                <h1 class="h3 mb-3 font-weight-normal">Vérifiez votre email</h1>
+                <p>
+                    Un email de vérification a été envoyé - veuillez cliquer dessus
+                    pour activer votre compte avant de vous connecter.
+                </p>
+                <button class="btn btn-primary" data-bss-hover-animate="pulse" type="submit" style="border-style: none;border-radius: 4px;background: #002d47;" onclick="window.location.href ='{{ path('app_verifier_renvoyer_email_formulaire', {pseudo: user.pseudo}) }}'">Réenvoyer l’email</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

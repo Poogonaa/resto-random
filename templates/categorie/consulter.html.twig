@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste des catégories | {{ parent() }} {% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-center justify-content-sm-center align-items-sm-center justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center align-items-xxl-center" style="width: 90%;padding: 70px 0px;margin: auto;">
+        <div class="container py-4 py-xl-5">
+            <div class="row mb-5">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <h2>Liste des catégories</h2>
+                    <p class="w-lg-50">Listes de toutes les catégories disponibles sur l’application.</p>
+                </div>
+            </div>
+            <div class="row gy-3 row-cols-sm-4 row-cols-md-5">
+                {% for categorie in categories %}
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body d-flex justify-content-center align-items-center align-content-center p-1 flex-column">
+                            <h4 class="card-title" style="text-align: center;">{{ categorie.name }}</h4>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <div class="d-flex d-xl-flex justify-content-end align-items-center justify-content-xl-end" style="margin: 0px 24px 20px;">
+                                    <button class="btn btn-primary" type="button" onclick="window.location.href = '{{ path('app_modifier_categorie', {'id' : categorie.id}) }}'" style="margin-right: 10px;border-style: none;border-radius: 4px;background: #002d47;">Modifier</button>
+                                    {{ form_start(form, {'action': path('app_supprimer_categorie', {'id': categorie.id})}) }}
+                                        <button class="js-btn-delete btn btn-danger" type="submit" style="border-style: none;border-radius: 4px;">Supprimer</button>
+                                    {{ form_end(form) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

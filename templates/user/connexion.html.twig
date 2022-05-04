@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Connexion | {{ parent() }} {% endblock %}
+
+{% block body %}
+<div class="d-flex" style="padding: 140px 0px;width: 100%;margin: auto;">
+    <section class="position-relative py-4 py-xl-5" style="width: 100%;">
+        <div class="container">
+            {% for flash in app.flashes('success') %}
+                <div class="alert alert-success">{{ flash | trans({flash}, 'verifyEmail') }}</div>
+            {% endfor %}
+            <div class="row mb-5">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <h2 style="color: #002d47;">Connexion</h2>
+                    <p class="w-lg-50" style="color: #002d47;">Page de connexion.</p>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-6 col-xl-4">
+                    <div class="card mb-5" style="background: rgba(255,255,255,0);">
+                        <div class="card-body d-flex flex-column align-items-center">
+                            <form class="text-center" action="{{ path('app_connexion') }}" method="post">
+                                {% if error %}
+                                    <div class="mb-3 alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                {% endif %}
+                                <div class="mb-3"><input class="form-control" type="text" name="pseudo" placeholder="Pseudo" style="color: #002d47;"></div>
+                                <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Mot de passe" style="color: #002d47;"></div>
+                                <div class="form-check md-3">
+                                    <label >
+                                        <input type="checkbox" name="_remember_me" class="form-check-input"> Se souvenir de moi
+                                    </label>
+                                </div>
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                <div class="mb-3">
+                                    <button class="btn btn-primary d-block w-100" data-bss-hover-animate="pulse" type="submit" style="border-style: none;border-radius: 4px;background: #002d47;">Connexion</button>
+                                </div>
+                                <a href="{{ path('app_forgot_password_request') }}" style="margin: 0px 0px 16px;color: #002d47;">Mot de passe oublié ?</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

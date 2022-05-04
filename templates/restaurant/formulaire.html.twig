@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Ajouter un restaurant | {{ parent() }} {% endblock %}
+
+{% block body %}
+<div class="d-flex" style="margin: 0px;padding: 70px;width: 100%;margin: auto;">
+    <section class="d-xxl-flex mt-auto justify-content-xxl-center align-items-xxl-center position-relative py-4 py-xl-5" style="width: 100%;">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <h1 style="color: #002d47;">Ajouter un restaurant</h1>
+                    <p class="w-lg-50" style="color: #00386b;">Ce formulaire permet de rajouter des restaurant à la liste des restaurants qui sont proposés aléatoirement.</p>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-6 col-xl-4">
+                    <div class="card mb-5" style="background: rgba(255,255,255,0);">
+                        <div class="card-body d-flex flex-column align-items-center" style="color: #002d47;">
+                            {{ form_start(form, {'attr':{'class':'text-center'}}, ) }}
+                                <div class="mb-3">
+                                    {{ form_errors(form.name) }}
+                                    {{ form_widget(form.name, {'attr':{'placeholder':'Nom', 'data-aos-duration':'500', 'class':'form-control', 'data-aos':'fade', 'maxlength':'255', 'style':'color: #002d47;background: rgba(255,255,255,0);', }}) }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form_errors(form.city) }}
+                                    {{ form_widget(form.city, {'attr' : {'placeholder' : 'Ville', 'data-aos-duration' : '500', 'class' : 'form-control', 'data-aos' : 'fade', 'maxlength':'255', 'style':'color: #002d47;background: rgba(255,255,255,0);'}}) }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form_errors(form.postal_code) }}
+                                    {{ form_widget(form.postal_code, {'attr' : {'placeholder' : 'Code Postal', 'data-aos-duration' : '500', 'class' : 'form-control', 'data-aos' : 'fade', 'style':'color: #002d47;background: rgba(255,255,255,0);',}}) }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form_errors(form.number) }}
+                                    {{ form_widget(form.number, {'attr' : {'placeholder' : 'Numéro de rue ( Entrez 0 si inconnu )', 'data-aos-duration' : '500', 'class' : 'form-control', 'data-aos' : 'fade', 'min':'0', 'style':'color: #002d47;background: rgba(255,255,255,0);',}}) }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form_errors(form.street) }}
+                                    {{ form_widget(form.street, {'attr' : {'placeholder' : 'Rue', 'data-aos-duration' : '500', 'class' : 'form-control', 'data-aos' : 'fade', 'maxlength':'512', 'style':'color: #002d47;background: rgba(255,255,255,0);',}}) }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form_errors(form.complement) }}
+                                    {{ form_widget(form.complement, {'attr' : {'placeholder' : 'Complément', 'data-aos-duration' : '500', 'class' : 'form-control', 'data-aos' : 'fade', 'maxlength':'512', 'style':'color: #002d47;background: rgba(255,255,255,0);',}}) }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form_errors(form.pictureFile) }}
+                                    {{ form_widget(form.pictureFile, {'attr' : {'placeholder' : 'Image', 'data-aos-duration' : '500', 'class' : 'form-control', 'data-aos' : 'fade', 'style':'color: #002d47;background: rgba(255,255,255,0);'}}) }}
+                                </div>
+                                <div class="mb-3 text-start" data-aos="fade" data-aos-duration="500">
+                                    {{ form_errors(form.Category) }}
+                                    {{ form_label(form.Category) }}
+                                    {{ form_widget(form.Category, {'attr': {'class':'row m-lg-0 gy-2 row-cols-2'}}) }}
+                                </div>
+                                <div class="mb-3"><button class="btn btn-primary d-block w-100" data-bss-hover-animate="pulse" type="submit" style="border-style: none;border-radius: 4px;background: #002d47;">Valider</button></div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

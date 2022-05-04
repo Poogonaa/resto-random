@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Consulter les comptes | {{ parent() }} {% endblock %}
+
+{% block body %}
+    <div class="d-flex" style="padding: 140px 0px;width: 100%;">
+        <section class="position-relative py-4 py-xl-5" style="width: 100%;">
+            <div class="container">
+                <div class="row mb-5">
+                    <div class="col-md-8 col-xl-6 text-center mx-auto">
+                        <h2 style="color: #002d47;">Modifier le compte</h2>
+                        <p class="w-lg-50" style="color: #002d47;">Permets de modifier un compte.</p>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card mb-5" style="background: rgba(255,255,255,0);">
+                            <div class="card-body d-flex flex-column align-items-center">
+                                {{ form_start(form) }}
+                                    <div class="mb-3">
+                                        {{ form_label(form.pseudo) }}
+                                        {{ form_widget(form.pseudo, {'attr': {'class':'form-control', 'placeholder':'Pseudo', 'style':'color: #002d47;'}}) }}
+                                    </div>
+                                    <div class="mb-3">
+                                        {{ form_label(form.mail) }}
+                                        {{ form_widget(form.mail, {'attr': {'class':'form-control', 'placeholder':'Email', 'style':'color: #002d47;'}}) }}
+                                    </div>
+                                    <div class="mb-3">
+                                        {{ form_label(form.admin) }}
+                                        {{ form_widget(form.admin, {'attr': {'class':'form-select', 'style':'color: #002d47;'}}) }}
+                                    </div>
+                                    <div class="mb-3">
+                                        {{ form_label(form.point) }}
+                                        {{ form_widget(form.point, {'attr': {'class':'form-control', 'placeholder':'Points', 'style':'color: #002d47;'}}) }}
+                                    </div>
+                                    <div class="mb-3">
+                                        {{ form_label(form.active) }}
+                                        {{ form_widget(form.active, {'attr': {'class':'form-select', 'style':'color: #002d47;'}}) }}
+                                    </div>
+                                    <div class="mb-3"><button class="btn btn-primary d-block w-100" data-bss-hover-animate="pulse" type="submit" style="border-radius: 4px;">Valider</button></div>
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Erreur ! | {{ parent() }} {% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-xl-center align-items-xl-center" style="padding: 140px 0px;width: 100%;margin: auto;">
+    <div class="d-flex flex-column justify-content-xl-center align-items-xl-center " style="width: 100%;">
+        <h2 style="color: #002d47;">Erreur : pas de restaurant</h2>
+        <p class="w-lg-50" style="color: #002d47;">Il semblerait qu’il n’y est pas de restaurant dans la base de donnée de l'application.&nbsp;</p>
+        <a href="{{ path('app_ajouter_restaurant') }}" style="color: #002d47;">Cliquez ici pour ajouter un restaurant !</a>
+    </div>
+</div>
+{% endblock %}

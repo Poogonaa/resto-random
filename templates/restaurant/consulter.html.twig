@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste des restaurants | {{ parent() }} {% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-center justify-content-sm-center align-items-sm-center justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center align-items-xxl-center" style="width: 90%;padding: 70px 0px;margin: auto;">
+        <div class="container py-4 py-xl-5">
+            <div class="row mb-5">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <h2>Liste des restaurants</h2>
+                    <p class="w-lg-50">Listes de tous les restaurants disponibles sur l’application.</p>
+                </div>
+            </div>
+            <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+                {% for restaurant in restaurants %}
+                <div class="col" data-bss-hover-animate="pulse">
+                    <a href="{{ path('app_consulter_un_restaurant', {id : restaurant.id}) }}" style="display:block;width:100%;height:100%;color: #002d47;text-decoration: none;">
+                    <div class="card"><img class="card-img-top w-100 d-block fit-cover" style="height: 200px; object-fit: cover" src="{{ asset(restaurant.getPicturePath()) }}">
+                        <div class="card-body p-4">
+                            <h4 class="card-title">{{ restaurant.name }}</h4>
+                            <p class="card-text">{% if restaurant.number != 0 %}{{ restaurant.number }} {% endif %}{{ restaurant.street }}, {{ restaurant.postalCode }} {{ restaurant.city }}<br></p>
+                            <div class="d-flex">
+                                <div class="text-start">
+                                    <p class="text-muted mb-0">Ajouté par :<br></p>
+                                    <p class="mb-0" style="color: #002d47;">{{ restaurant.user ? restaurant.user.pseudo : 'Utilisateur supprimé' }}<br></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

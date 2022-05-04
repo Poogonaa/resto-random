@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réinitialiser votre mot de passe | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="d-flex" style="padding: 140px 0px;width: 100%;">
+        <section class="position-relative py-4 py-xl-5" style="width: 100%;">
+            <div class="container">
+                <div class="row mb-5">
+                    <div class="col-md-8 col-xl-6 text-center mx-auto">
+                        <h2 style="color: #002d47;">Réinitialiser votre mot de passe</h2>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card mb-5" style="background: rgba(255,255,255,0);">
+                            <div class="card-body d-flex flex-column align-items-center">
+                                <p>Un mail vous a été envoyer contenant un lien que vous pouvez utiliser pour réinitialiser votre mot de passe.
+                                    Le lien expire dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+                                <p>Si vous n’avez pas reçu le mail, vérifier votre dossier de pourriel ou <a href="{{ path('app_forgot_password_request') }}">réessayer</a>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
