@@ -97,7 +97,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     {
         $this->mail = $mail;
 
-       return $this;
+        return $this;
     }
 
     public function getActive(): ?bool

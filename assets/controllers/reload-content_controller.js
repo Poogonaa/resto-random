@@ -8,11 +8,12 @@ export default class extends Controller {
     }
 
     async refreshContent(event) {
+        this.contentTarget.style.opacity = .5;
         const response = await axios.get(this.urlValue)
             .then((response) => {
                 console.log(response);
                 this.contentTarget.innerHTML = response.data;
+                this.contentTarget.style.opacity = 1;
             });
-        //this.contentTarget.innerHTML = await response.text();
     }
 }

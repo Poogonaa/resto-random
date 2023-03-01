@@ -6,7 +6,6 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -52,7 +51,7 @@ class UserRepository extends ServiceEntityRepository
     public function changeActiveStatus(User $user)
     {
         $this->createQueryBuilder('u')
-            ->update('App:User','u')
+            ->update('App:User', 'u')
             ->set('u.active', ':status')
             ->andWhere('u.pseudo = :p')
             ->setParameter('p', $user->getPseudo())
@@ -60,6 +59,21 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findOneBySomeFiled($value)
+    {
+        return $this->createQueryBuilder('u')
+            ->setParameter('value', $value)
+            ->select('u')
+            ->from('App:User', 'u')
+            ->orWhere('u.pseudo = :value')
+            ->orWhere('u.active = :value')
+            ->orWhere('u.mail = :value')
+            ->orWhere('u.point = :value')
+            ->orWhere('JSON_VALUE( u.roles, :value )')
+            ->getQuery()
+            ->getResult();
     }
 
     /*

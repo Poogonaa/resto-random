@@ -3,15 +3,10 @@
 namespace App\Service;
 
 use App\Entity\User;
-use App\Form\ChangePasswordType;
 use App\Form\InscriptionType;
-use App\Form\UserDeleteType;
-use App\Form\UserChangeStatusType;
 use App\Form\UserEditAdminType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -27,7 +22,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
-class UserService{
+class UserService
+{
     private Request $request;
     private EntityManagerInterface $entityManager;
     private UserRepository $userRepository;
@@ -37,10 +33,16 @@ class UserService{
     private VerifyEmailHelperInterface $verifyEmailHelper;
     private TransportInterface $mailer;
 
-    public function __construct(RequestStack $request, EntityManagerInterface $entityManager,
-                                UserRepository $userRepository, FormFactoryInterface $formFactory,
-                                UserPasswordHasherInterface $hasher, AuthenticationUtils $authenticationUtils,
-                                VerifyEmailHelperInterface $verifyEmailHelper, TransportInterface $mailer){
+    public function __construct(
+        RequestStack $request,
+        EntityManagerInterface $entityManager,
+        UserRepository $userRepository,
+        FormFactoryInterface $formFactory,
+        UserPasswordHasherInterface $hasher,
+        AuthenticationUtils $authenticationUtils,
+        VerifyEmailHelperInterface $verifyEmailHelper,
+        TransportInterface $mailer
+    ) {
         $this->request = $request->getCurrentRequest();
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
@@ -51,7 +53,8 @@ class UserService{
         $this->mailer = $mailer;
     }
 
-    public function inscriptionFormulaire(User $user): FormInterface{
+    public function inscriptionFormulaire(User $user): FormInterface
+    {
         $form = $this->formFactory->create(InscriptionType::class, $user);
 
         $form->handleRequest($this->request);
@@ -59,7 +62,8 @@ class UserService{
         return $form;
     }
 
-    public function inscription(User $user): void{
+    public function inscription(User $user): void
+    {
         $user->setPassword(
             $this->hasher->hashPassword(
                 $user,
@@ -76,7 +80,8 @@ class UserService{
         $this->entityManager->flush();
     }
 
-    public function envoyerVerifierEmail(User $user){
+    public function envoyerVerifierEmail(User $user)
+    {
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             'app_verifier_email',
             $user->getPseudo(),
@@ -100,28 +105,43 @@ class UserService{
         }
     }
 
-    public function connexion(): ?AuthenticationException{
+    public function connexion(): ?AuthenticationException
+    {
         return $this->authenticationUtils->getLastAuthenticationError();
     }
 
-    public function getAllASC(): array{
+    public function getSomeUsers($value): User
+    {
+        return $this->userRepository->findOneBySomeFiled($value);
+    }
+    public function getAllASC(): array
+    {
         return $this->userRepository->findBy([], ['pseudo' => 'ASC']);
     }
 
-    public function updateStatus(User $user){
+    public function updateStatus(User $user)
+    {
         $this->userRepository->changeActiveStatus($user);
     }
 
-    public function supprimer($utilisateur){
+    public function supprimer($utilisateur)
+    {
         $this->entityManager->remove($utilisateur);
         $this->entityManager->flush();
     }
 
-    public function modifierAdmin(User $user, FormInterface $form){
-        if($form['admin']->getData() == true){
+    public function modifierAdminFormulaire(User $user): FormInterface
+    {
+        $form = $this->formFactory->create(UserEditAdminType::class, $user);
+        $form->handleRequest($this->request);
+        return $form;
+    }
+
+    public function modifierAdmin(User $user, FormInterface $form)
+    {
+        if ($form['admin']->getData() == true) {
             $user->setRoles(['ROLE_ADMIN']);
-        }
-        else{
+        } else {
             $user->setRoles([]);
         }
 
@@ -138,9 +158,10 @@ class UserService{
      * @throws VerifyEmailExceptionInterface
      * @throws NotFoundHttpException
      */
-    public function verifyEmail(){
+    public function verifyEmail()
+    {
         $user = $this->userRepository->find($this->request->get('pseudo'));
-        if(!$user){
+        if (!$user) {
             throw new NotFoundHttpException('Utilisateur non trouvé.', null);
         }
         $this->verifyEmailHelper->validateEmailConfirmation(
@@ -153,7 +174,8 @@ class UserService{
         $this->entityManager->flush();
     }
 
-    public function isXmlHttpRequest(): bool{
-        return $this->request->isXmlHttpRequest();
+    public function isXmlHttpRequest(Request $request): bool|null
+    {
+        return $request->query->get('ajax');
     }
 }

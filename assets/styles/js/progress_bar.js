@@ -13,7 +13,7 @@ function progress_bar(){
         click.style.visibility = "hidden";
         function frames(){
             a = a+1;
-            if(a == 101) {
+            if(a === 101) {
                 clearInterval(run);
                 location.replace('/restaurant/hasard/'+id);
             }

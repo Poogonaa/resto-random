@@ -15,10 +15,9 @@ class UserEditAdminType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        if(in_array('ROLE_ADMIN', $options['data']->getRoles())){
+        if (in_array('ROLE_ADMIN', $options['data']->getRoles(), true)) {
             $role_data = true;
-        }
-        else{
+        } else {
             $role_data = false;
         }
         $builder

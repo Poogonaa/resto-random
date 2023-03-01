@@ -23,7 +23,8 @@ class LoginFormAuthenticator extends AbstractAuthenticator
     private UserRepository $repository;
     private RouterInterface $router;
 
-    public function __construct(UserRepository $repository, RouterInterface $router){
+    public function __construct(UserRepository $repository, RouterInterface $router)
+    {
         $this->repository = $repository;
         $this->router = $router;
     }
@@ -39,10 +40,10 @@ class LoginFormAuthenticator extends AbstractAuthenticator
         $password = $request->request->get('password');
 
         return  new Passport(
-            new UserBadge($pseudo, function ($userIdentifier){
+            new UserBadge($pseudo, function ($userIdentifier) {
                 $user = $this->repository->findOneBy(['pseudo'=>$userIdentifier]);
 
-                if(!$user){
+                if (!$user) {
                     throw new UserNotFoundException();
                 }
 

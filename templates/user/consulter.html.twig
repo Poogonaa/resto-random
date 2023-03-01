@@ -3,12 +3,10 @@
 {% block title %} Consulter les comptes | {{ parent() }} {% endblock %}
 
 {% block body %}
-    <div
-            class="d-flex justify-content-center justify-content-sm-center align-items-sm-center justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center align-items-xxl-center" style="width: 90%;padding: 70px 0px;"
-            {{ stimulus_controller('reload-content', {
-                url: path('app_consulter_utilisateur')
-            }) }}
+    <div class="d-flex justify-content-center justify-content-sm-center align-items-sm-center justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center align-items-xxl-center" style="width: 90%;padding: 70px 0px;"
+            {{ stimulus_controller('reload-content', {url: path('app_consulter_utilisateur', { ajax: 1 })}) }}
             {{ stimulus_action('user-table:success->reload-content', 'refreshContent') }}
+            {{ stimulus_action('sort-table:success->reload-content', 'refreshContent') }}
     >
         <div class="container py-4 py-xl-5">
             <div class="row mb-5">
@@ -17,8 +15,14 @@
                     <p class="w-lg-50">Listes de tous les utilisateurs inscrit sur l’application.</p>
                 </div>
             </div>
-            <div class="table-responsive text-center d-flex" style="width: 100%;border-radius: 8px;border: 1px solid rgba(0,0,0,0.18) ;border-bottom-color: rgba(0, 0, 0, 0.18);" data-reload-content-target="content">
-                {{ include('/user/_list.html.twig') }}
+            <div {{ stimulus_controller('research-table') }}>
+                <div class="flex-row-reverse mb-3 justify-content-end align-items-end text-end" style="color: #002d47;">
+                    <label>Rechercher :</label>
+                    <input class="form-control w-auto d-inline" type="text" data-research-table-target="recherche" {{ stimulus_action('research-table', 'search') }}">
+                </div>
+                <div class="table-responsive text-center d-flex" style="width: 100%;border-radius: 8px;border: 1px solid rgba(0,0,0,0.18) ;border-bottom-color: rgba(0, 0, 0, 0.18);" data-reload-content-target="content">
+                    {{ include('/user/_list.html.twig') }}
+                </div>
             </div>
         </div>
     </div>

@@ -13,32 +13,34 @@ class FileService
     private SluggerInterface $slugger;
     private ParameterBagInterface $params;
 
-    public function __construct(SluggerInterface $slugger, ParameterBagInterface $params){
+    public function __construct(SluggerInterface $slugger, ParameterBagInterface $params)
+    {
         $this->slugger = $slugger;
         $this->params = $params;
     }
-    public function uploadPicture(UploadedFile $pictureFile, String $fileName): string {
+    public function uploadPicture(UploadedFile $pictureFile, String $fileName): string
+    {
         $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
-        if($fileName != ''){
+        if ($fileName != '') {
             $newFilename = $fileName;
-        }
-        else{
+        } else {
             $newFilename = $safeFilename.'-'.uniqid().'.'.$pictureFile->guessExtension();
         }
 
-        try{
+        try {
             $pictureFile->move(
                 $this->params->get('kernel.project_dir').'/public/upload',
                 $newFilename
             );
-        } catch (FileException $e){
+        } catch (FileException $e) {
             dd($e);
         }
         return $newFilename;
     }
 
-    public function deletePicture(String $imagePath){
+    public function deletePicture(String $imagePath)
+    {
         $fileSystem = new Filesystem();
         $projetDir = $this->params->get('kernel.project_dir');
 

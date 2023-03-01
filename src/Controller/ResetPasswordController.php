@@ -27,8 +27,8 @@ class ResetPasswordController extends AbstractController
 {
     use ResetPasswordControllerTrait;
 
-    private ResetPasswordHelperInterface $resetPasswordHelper;
-    private EntityManagerInterface $entityManager;
+    protected ResetPasswordHelperInterface $resetPasswordHelper;
+    protected EntityManagerInterface $entityManager;
 
     public function __construct(ResetPasswordHelperInterface $resetPasswordHelper, EntityManagerInterface $entityManager)
     {
@@ -41,18 +41,18 @@ class ResetPasswordController extends AbstractController
      * @throws TransportExceptionInterface
      */
     #[Route('/', name: 'app_forgot_password_request')]
-    public function request(Request $request, TransportInterface $mailer, TranslatorInterface $translator): Response{
+    public function request(Request $request, TransportInterface $mailer, TranslatorInterface $translator): Response
+    {
         $user = $this->getUser();
-        if(!$user){
+        if (!$user) {
             $form = $this->createForm(ResetPasswordRequestFormType::class);
-        }
-        else{
+        } else {
             $form = $this->createForm(ResetPasswordRequestFormType::class, $user);
         }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if($user){
+            if ($user) {
                 $this->getSessionService()->clear();
             }
             return $this->processSendingPasswordResetEmail(
@@ -164,11 +164,11 @@ class ResetPasswordController extends AbstractController
             // the lines below and change the redirect to 'app_forgot_password_request'.
             // Caution: This may reveal if a user is registered or not.
             //
-             $this->addFlash('reset_password_error', sprintf(
-                 '%s - %s',
-                 $translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_HANDLE, [], 'ResetPasswordBundle'),
+            $this->addFlash('reset_password_error', sprintf(
+                '%s - %s',
+                $translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_HANDLE, [], 'ResetPasswordBundle'),
                 $translator->trans($e->getReason(), [], 'ResetPasswordBundle')
-             ));
+            ));
 
             return $this->redirectToRoute('app_forgot_password_request');
         }

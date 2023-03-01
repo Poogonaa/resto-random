@@ -180,7 +180,8 @@ class Restaurant
         return $this;
     }
 
-    public function getPicturePath(){
+    public function getPicturePath()
+    {
         return 'upload/'.$this->getPicture();
     }
 }
