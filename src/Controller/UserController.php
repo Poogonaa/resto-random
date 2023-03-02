@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Service\UserService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,9 +19,20 @@ class UserController extends AbstractController
 {
     private UserService $userManager;
 
-    public function __construct(UserService $userManager)
+    private UserRepository $userRepository;
+
+    public function __construct(UserService $userManager, UserRepository $userRepository)
     {
         $this->userManager = $userManager;
+        $this->userRepository = $userRepository;
+    }
+
+    #[Route('/GetUsersJson')]
+    public function getUsersJson(): JsonResponse
+    {
+        $users = $this->userRepository->getAll();
+
+        return $this->json(['users' => $users], 200);
     }
 
     #[Route('/inscription', name: 'app_inscription')]

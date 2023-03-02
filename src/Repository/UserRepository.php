@@ -76,6 +76,14 @@ class UserRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getAll()
+    {
+        return$this->createQueryBuilder('u')
+            ->select('u.pseudo, u.mail')
+            ->getQuery()
+            ->getResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?User
     {
