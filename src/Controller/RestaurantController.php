@@ -2,11 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Restaurant;
+use App\Entity\User;
+use App\Repository\CategoryRepository;
+use App\Repository\RestaurantRepository;
+use App\Repository\UserRepository;
 use App\Service\RestaurantService;
 use App\Service\RandomGeneratorService;
+use Doctrine\ORM\EntityManager;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -94,5 +102,45 @@ class RestaurantController extends AbstractController
         return $this->render('restaurant/consulter.html.twig', [
             'restaurants' => $this->restaurantManager->getAllASC(),
         ]);
+    }
+
+    #[Route('/AddRestoJson')]
+    public function addRestoJson(Request $request, EntityManager $entityManager, UserRepository $userRepository, CategoryRepository $categoryRepository):JsonResponse
+    {
+        $requestData = json_decode($request->getContent(), true);
+        $restaurant = new Restaurant();
+        $restaurant->setName($requestData["name"]);
+        $restaurant->setCity($requestData["city"]);
+        $restaurant->setNumber($requestData["number"]);
+        $restaurant->setPostalCode($requestData["postalCode"]);
+        $restaurant->setStreet($requestData["street"]);
+        $restaurant->setComplement($requestData["complement"]);
+        $restaurant->setUser($userRepository->findOneBy(["pseudo" => "Pogona"]));
+        $restaurant->addCategory($categoryRepository->findOneBy(["id" => 1]));
+        $restaurant->setPicture("Rien ici");
+
+        $entityManager->persist($restaurant);
+        $entityManager->flush($restaurant);
+
+        return $this->json(["Reponse" => "Restaurant ajouté avec succès"], Response::HTTP_OK);
+    }
+
+    #[Route('/deleteRestoJson')]
+    public function deleteRestoJson(Request $request, EntityManager $entityManager, RestaurantRepository $restaurantRepository): JsonResponse
+    {
+        $requestData = json_decode($request->getContent(), true);
+        $restaurant = $restaurantRepository->findOneBy(["id" => $requestData["id"]]);
+
+        $entityManager->remove($restaurant);
+        $entityManager->flush();
+
+        return $this->json(["Reponse" => "Restaurant supprimé avec succès"], Response::HTTP_OK);
+    }
+
+    #[Route('/getAllRestoJson')]
+    public function getAllRestoJson(RestaurantRepository $restaurantRepository){
+        $restaurant = $restaurantRepository->getAll();
+
+        return $this->json(['Restaurants' => $restaurant], 200);
     }
 }

@@ -73,4 +73,11 @@ class RestaurantRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function getAll()
+    {
+        return$this->createQueryBuilder('r')
+        ->select('r.name, r.city, r.postal_code, r.number, r.street, r.complement')
+        ->getQuery()
+        ->getResult();
+    }
 }
