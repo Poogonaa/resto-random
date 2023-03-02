@@ -40,16 +40,18 @@ class UserController extends AbstractController
     {
         $user = new User();
 
+        $response = new JsonResponse();
+
         $form = $this->userManager->inscriptionFormulaire($user);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->userManager->inscription($user);
 
-            return $this->redirectToRoute('app_connexion');
+            $response->setData(['success' => true]);
+        } else {
+            $response->setData(['success' => false, 'errors' => $form->getErrors()]);
         }
 
-        return $this->renderForm('/user/inscription.html.twig', [
-            'form' => $form,
-        ]);
+        return $response;
     }
 
     #[Route('/admin/utilisateur/getUsers', name: 'app_get_utilisateur', methods: 'GET')]
